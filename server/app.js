@@ -6,6 +6,8 @@ let app = express();
 
 app.use(bodyParser.json());
 
+app.use('/api/jobs', require('./routes/jobs.routes.js'));
+
 
 
 app.listen(3000, function startServer() {
