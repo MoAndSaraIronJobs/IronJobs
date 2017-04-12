@@ -12,9 +12,24 @@ let allJobs = [
 
 jobRouter.get('/', function getAllJobs(req, res, next) {
   console.log('inside get all jobs');
-  res.json(allJobs);
+      res.json(allJobs.map(function(obj) {
+      return {
+      id: obj.id,
+      link: obj.link,
+      notes: obj.notes
+      };
+    }));
 });
 
+jobRouter.post('/', function postNewJob(req, res, next) {
+  console.log(req.body);
+  res.json({
+    company: 'google',
+    link: 'www.google.com',
+    notes: 'more awesome',
+    createTime: Date.now()
+  });
+});
 
 
 module.exports = jobRouter;
