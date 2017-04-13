@@ -2,6 +2,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+require('./database-setup.js');
+
 let app = express();
 
 app.use(bodyParser.json());
