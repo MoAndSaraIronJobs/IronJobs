@@ -8,10 +8,11 @@ let app = express();
 
 app.use(bodyParser.json());
 
+app.use(express.static(__dirname + '/../client'));
+
 app.use('/api/jobs', require('./routes/jobs.routes.js'));
+
 app.use(require('./middleware/error-handler.middleware.js'));
-
-
 
 app.listen(3000, function startServer() {
   console.log('Server is up!');

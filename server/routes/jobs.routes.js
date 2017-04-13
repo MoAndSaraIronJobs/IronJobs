@@ -1,14 +1,6 @@
 const jobRouter = require('express').Router();
 
-let allJobs = [
-  {
-    id: '12345',
-    company: 'Etsy',
-    link: 'www.etsy.com',
-    notes: 'awesome',
-    createTime: Date.now()
-  }
-];
+const Job = require('../models/Job.model.js');
 /**
 * Retrieves a list of all jobs
 * @param  {Object}   req  Must contain keys for id, company, and link
@@ -17,20 +9,27 @@ let allJobs = [
 * @return {void}
 */
 jobRouter.get('/', function getAllJobs(req, res, next) {
-  console.log('inside get all jobs');
 
+  Job.find()
+  .then(function sendAllJobs(allJobs) {
     if(!Array.isArray(allJobs)) {
       let err = new Error('allJobs is no longer an array');
       err.status = 500;
       return next();
     }
-      res.json(allJobs.map(function(obj) {
+
+    res.json(allJobs.map(function(obj) {
       return {
-      id: obj.id,
-      link: obj.link,
-      notes: obj.notes
+        id: obj.id,
+        link: obj.link,
+        notes: obj.notes
       };
     }));
+  })
+  .catch(function handleErrors(err) {
+    let theError = new Error('Could not get all jobs');
+    theError.status = 422;
+  });
 });
 
 jobRouter.post('/', function postNewJob(req, res, next) {
