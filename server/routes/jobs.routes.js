@@ -9,13 +9,13 @@ let allJobs = [
     createTime: Date.now()
   }
 ];
-                   /**
-                    * Retrieves a list of all jobs
-                    * @param  {Object}   req  Must contain keys for id, company, and link
-                    * @param  {Object}   res  the response
-                    * @param  {Function} next
-                    * @return {void}
-                    */
+/**
+* Retrieves a list of all jobs
+* @param  {Object}   req  Must contain keys for id, company, and link
+* @param  {Object}   res  the response
+* @param  {Function} next
+* @return {void}
+*/
 jobRouter.get('/', function getAllJobs(req, res, next) {
   console.log('inside get all jobs');
 
