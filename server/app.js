@@ -8,7 +8,7 @@ let app = express();
 
 app.use(bodyParser.json());
 
-app.use(express.static(__dirname + '/../client'));
+app.use(express.static(__dirname + '/../client/public/'));
 
 app.use('/api/jobs', require('./routes/jobs.routes.js'));
 
