@@ -16,11 +16,16 @@ jobRouter.get('/', function getAllJobs(req, res, next) {
       err.status = 500;
       return next();
     }
-    res.json(allJobs.map(function(obj) {
+/**
+* Creates a new object containing only specific keys
+* @param  {Object} job The original object containing all keys
+* @return {Object}     The new object containing only some keys
+*/
+    res.json(allJobs.map(function(job) {
       return {
-        id: obj.id,
-        link: obj.link,
-        notes: obj.notes
+        id: job.id,
+        link: job.link,
+        notes: job.notes
       };
     }));
   })
@@ -30,7 +35,13 @@ jobRouter.get('/', function getAllJobs(req, res, next) {
     return next(theError);
   });
 });
-
+/**
+ * Retrieves a single job by the object ID
+ * @param  {Object}   req  must contain a body like {foundJob: 999 id number}
+ * @param  {Object}   res  Contains the found job id number
+ * @param  {Function} next
+ * @return {Object}        Contains the id number for one job
+ */
 jobRouter.get('/:id', function getSingleJob(req, res, next) {
   Job.findById(req.params.id)
     .then(function sendSingleJob(job) {
@@ -43,6 +54,13 @@ jobRouter.get('/:id', function getSingleJob(req, res, next) {
     });
 });
 
+/**
+ * Adds a new job
+ * @param  {Object}   req  must have body like {company: 'google', link: 'www.google.com', notes: 'more awesome'}
+ * @param  {Object}   res  contains a confirmation message that the job has been posted
+ * @param  {Function} next
+ * @return {void}
+ */
 jobRouter.post('/', function postNewJob(req, res, next) {
   // TODO: add data audits for lack of required fields
   console.log(req.body);
@@ -56,14 +74,36 @@ jobRouter.post('/', function postNewJob(req, res, next) {
 
   newJob.save()
     .then(function sendResponse(data) {
-      res.json({message: 'I have no idea what to put here!'});
+      res.json({message: 'Your job has been posted!'});
     })
     .catch(function handleErrors(err) {
       let theError = new Error('Could not post a new job');
      theError.status = 422;
      return next(theError);
     });
+});
 
+/**
+ * Deletes a job posting
+ * @param  {Object}   req  The job to be deleted
+ * @param  {Object}   res  Contains a confirmation message that the job has been deleted
+ * @param  {Function} next
+ * @return {void}
+ */
+jobRouter.delete('/:id', function deleteJob(req, res, next) {
+  Job.findById({_id: req.params.id})
+    .then(function deleteAJob(job) {
+      // TODO: error handling
+      Job.remove(function deletion(err, job) {
+        res.json({message: 'This job has been deleted'});
+      });
+
+    })
+    .catch(function handleErrors(err) {
+      let theError = new Error('Could not delete this job');
+      theError.status = 500;
+      return next(theError);
+    });
 });
 
 
