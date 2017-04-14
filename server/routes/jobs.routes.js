@@ -63,14 +63,6 @@ jobRouter.get('/:id', function getSingleJob(req, res, next) {
  */
 jobRouter.post('/', function postNewJob(req, res, next) {
   // TODO: add data audits for lack of required fields
-  console.log(req.body);
-
-  let newJob = new Job( {
-    company: 'google',
-    link: 'www.google.com',
-    notes: 'more awesome',
-    createTime: Date.now()
-  });
 
   newJob.save()
     .then(function sendResponse(data) {
