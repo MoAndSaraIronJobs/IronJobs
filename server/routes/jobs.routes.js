@@ -34,7 +34,7 @@ jobRouter.get('/', function getAllJobs(req, res, next) {
 jobRouter.get('/:id', function getSingleJob(req, res, next) {
   Job.findById(req.params.id)
     .then(function sendSingleJob(job) {
-      res.json(allJobs[req.params.id]);
+      res.json({foundJob: req.params.id});
     })
     .catch(function handleErrors(err) {
       let theError = new Error('Could not find this job');
